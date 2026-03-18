@@ -1,7 +1,7 @@
 
 export const LOCALE_STORAGE_KEY = 'zeroclaw-locale';
 
-const DEFAULT_LOCALE = 'en';
+const DEFAULT_LOCALE = 'zh';
 
 export function loadLocale(): string {
   const locale = localStorage.getItem(LOCALE_STORAGE_KEY);

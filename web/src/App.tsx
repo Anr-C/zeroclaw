@@ -28,7 +28,7 @@ interface LocaleContextType {
 }
 
 export const LocaleContext = createContext<LocaleContextType>({
-  locale: 'en',
+  locale: 'zh',
   setAppLocale: () => {},
 });
 
