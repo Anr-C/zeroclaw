@@ -22,7 +22,7 @@ interface LocaleContextType {
 }
 
 export const LocaleContext = createContext<LocaleContextType>({
-  locale: 'en',
+  locale: 'zh',
   setAppLocale: () => {},
 });
 
@@ -99,7 +99,7 @@ function PairingDialog({ onPair }: { onPair: (code: string) => Promise<void> }) 
 
 function AppContent() {
   const { isAuthenticated, requiresPairing, loading, pair, logout } = useAuth();
-  const [locale, setLocaleState] = useState('en');
+  const [locale, setLocaleState] = useState('zh');
   const draftStore = useDraftStore();
 
   const setAppLocale = (newLocale: string) => {

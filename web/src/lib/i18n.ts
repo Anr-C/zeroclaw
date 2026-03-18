@@ -912,7 +912,7 @@ const translations: Record<Locale, Record<string, string>> = {
 // Current locale state
 // ---------------------------------------------------------------------------
 
-let currentLocale: Locale = 'en';
+let currentLocale: Locale = 'zh';
 
 export function getLocale(): Locale {
   return currentLocale;
