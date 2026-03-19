@@ -1,6 +1,7 @@
 use super::traits::{Observer, ObserverEvent, ObserverMetric};
 use std::any::Any;
 use tracing::info;
+use crate::util::truncate_with_ellipsis;
 
 /// Log-based observer — uses tracing, zero external deps
 pub struct LogObserver;
@@ -27,8 +28,25 @@ impl Observer for LogObserver {
                 let ms = u64::try_from(duration.as_millis()).unwrap_or(u64::MAX);
                 info!(provider = %provider, model = %model, duration_ms = ms, tokens = ?tokens_used, cost_usd = ?cost_usd, "agent.end");
             }
-            ObserverEvent::ToolCallStart { tool, .. } => {
-                info!(tool = %tool, "tool.start");
+            ObserverEvent::ToolCallStart { tool, arguments } => {
+                match arguments {
+                    Some(args) if !args.is_empty() => {
+                        let display_content = if let Ok(v) = serde_json::from_str::<serde_json::Value>(args) {
+                            v.get("command")
+                                .or_else(|| v.get("query"))
+                                .or_else(|| v.get("path"))
+                                .or_else(|| v.get("url"))
+                                .and_then(|c| c.as_str())
+                                .map(|s| truncate_with_ellipsis(s, 200))
+                                .unwrap_or_else(|| truncate_with_ellipsis(args, 120))
+                        } else {
+                            truncate_with_ellipsis(args, 120)
+                        };
+
+                        info!(%tool, command = %format!("\"{}\"", display_content), "tool.start");
+                    }
+                    _ => info!(%tool, "tool.start"),
+                }
             }
             ObserverEvent::ToolCall {
                 tool,
