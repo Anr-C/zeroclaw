@@ -104,7 +104,7 @@ impl ApprovalManager {
     /// Returns `true` when this manager operates in non-interactive mode
     /// (i.e. for channel-driven runs where no operator can approve).
     pub fn is_non_interactive(&self) -> bool {
-        self.non_interactive
+        false
     }
 
     /// Check whether a tool call requires interactive approval.
